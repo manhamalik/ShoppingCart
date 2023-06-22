@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            display: flex;
+            gap: 20px;
+        }
+
+        .food-container {
+            flex: 2;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        .cart-container {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .food-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .food-item h3 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .food-item img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .food-item button {
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 5px;
+           font-family: Verdana, Geneva, sans-serif;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-right: 50px; /* Adjust the margin as needed */
+        }
+
+        .cart-item span {
+            text-align: left;
+        }
+
+        .cart-item button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .cart-heading {
+            text-align: center;
+        }
+        
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+          margin-left: 50px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-item span {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <center>
+            <p>Please select the items you wish to purchase by clicking "Add" below. Once selected, the items will be seamlessly added to your shopping cart.<br>Should you change your mind, you can easily remove any unwanted items directly from your cart.</p>
+        </center>
+        <div class="content">
+            <div class="food-container">
+                {% for item in food_items %}
+                <div class="food-item">
+                    <h3>{{ item }}</h3>
+                    <img src="{{ url_for('static', filename='food_images/' + item.lower().replace(' ', '_') + '.jpg') }}">
+                    <form action="/add_to_cart" method="POST">
+                        <input type="hidden" name="item_name" value="{{ item }}">
+                        <button type="submit">Add</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="cart-container">
+                <h2 class="cart-heading">Cart Items:</h2>
+                <div class="cart-items">
+                    {% for item in cart %}
+                    <div class="cart-item">
+                        <span>{{ item }}</span>
+                        <form action="/remove_from_cart" method="POST">
+                            <input type="hidden" name="item_name" value="{{ item }}">
+                            <button type="submit">x</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
